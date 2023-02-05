@@ -179,7 +179,7 @@ public class CommandExec implements CommandExecutor {
                 break;
             default:
                 // Do stuff
-                p.sendMessage("Invalid argument");
+                p.sendMessage("Arguments: dash/wallclimb/walljump");
                 break;
         }
         return true;
