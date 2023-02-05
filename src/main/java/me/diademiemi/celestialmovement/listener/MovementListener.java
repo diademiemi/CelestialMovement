@@ -9,24 +9,22 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class DashListener implements Listener { // Change "BlockBreakEventListener" to the name of your listener
+public class MovementListener implements Listener { // Change "BlockBreakEventListener" to the name of your listener
 
     /**
      * Constructor
      */
-    public DashListener() {
+    public MovementListener() {
         // Constructor
     }
 
@@ -37,6 +35,22 @@ public class DashListener implements Listener { // Change "BlockBreakEventListen
         Player p = e.getPlayer();
         if (p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) {
             PlayerPreferences prefs = PreferenceList.getPlayerPreferences(p);
+            // Check if player is touching a wall
+            if (p.getLocation().add(0.7, 0, 0).getBlock().getType().isSolid() ||
+                    p.getLocation().add(-0.7, 0, 0).getBlock().getType().isSolid() ||
+                    p.getLocation().add(0, 0, 0.7).getBlock().getType().isSolid() ||
+                    p.getLocation().add(0, 0, -0.7).getBlock().getType().isSolid()) {
+                // Check if player has wall jump enabled, if not, check if they have dash enabled
+                if (prefs.getWallJump()) {
+                    e.setCancelled(true);
+                    p.setFlying(false);
+                    p.setVelocity(p.getLocation().getDirection().multiply(0.75).add(new Vector(0,0.4,0)));
+                    p.getWorld().playSound(p.getLocation(), Sound.BLOCK_GRASS_STEP, 0.5f, 2f);
+                    return; // Don't continue for dash
+                }
+            }
+
+            // Midair dash
             if (prefs.getDash()) {
                 e.setCancelled(true);
                 p.setFlying(false);
@@ -62,8 +76,8 @@ public class DashListener implements Listener { // Change "BlockBreakEventListen
                 // Get the block below the player
                 Block b = p.getLocation().getBlock().getRelative(0, -2, 0);
                 // Check if block is solid
-                p.getWorld().playSound(p.getLocation(), Sound.ENTITY_ARMOR_STAND_BREAK, 1, 1);
-                p.getWorld().spawnParticle(Particle.END_ROD, p.getLocation(), 40, 0, 0, 0, 0.5);
+                p.getWorld().playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 0.2f, 0.7f);
+                p.getWorld().spawnParticle(Particle.FLAME, p.getLocation(), 20, 0, 0, 0, 0.1);
 
                 if (b.getType().isSolid() && p.isSneaking()) {
                     // Do a "hyperdash" if the player is sneaking and close to the ground
@@ -84,23 +98,52 @@ public class DashListener implements Listener { // Change "BlockBreakEventListen
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Player p = e.getPlayer();
-        if (p.getUniqueId() != null) {
-            // Reset when player touches the ground
-            if (p.isOnGround()) {
-                dashes.remove(p.getUniqueId());
+        // Check if player is in survival or adventure mode
+        if (p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) {
+
+            if (p.getUniqueId() != null) {
+                // Reset dash when player touches the ground
                 PlayerPreferences prefs = PreferenceList.getPlayerPreferences(p);
-                if (prefs.getDash()) {
-                    p.setAllowFlight(true);
+
+                if (p.isOnGround()) {
+                    dashes.remove(p.getUniqueId());
+                    if (prefs.getDash()) {
+                        p.setAllowFlight(true);
+                    }
                 }
-                if (PreferenceList.getPlayerPreferences(p).getDash()) {
-                    p.setAllowFlight(true);
+                // Reset fall damage if a player has dashed
+                if (dashes.containsKey(p.getUniqueId())) {
+                    if (dashes.get(p.getUniqueId()) > 0) {
+                        p.setFallDistance(0);
+                    }
                 }
-            }
-            // Reset fall damage if a player has dashed
-            if (dashes.containsKey(p.getUniqueId())) {
-                if (dashes.get(p.getUniqueId()) > 0) {
-                    p.setFallDistance(0);
+
+                // Check if the player is in the air
+                if (!p.isOnGround()) {
+                    // Check if player is touching a wall
+                    if (p.getLocation().add(0.5, 0, 0).getBlock().getType().isSolid() ||
+                        p.getLocation().add(-0.5, 0, 0).getBlock().getType().isSolid() ||
+                        p.getLocation().add(0, 0, 0.5).getBlock().getType().isSolid() ||
+                        p.getLocation().add(0, 0, -0.5).getBlock().getType().isSolid()) {
+
+
+                        // Check if player is sneaking
+                        if (p.isSneaking()) {
+                            if (prefs.getWallClimb()) {
+                                // Check if player is looking up
+                                if (p.getLocation().getPitch() < -20) {
+                                    // Slowly move the player up
+                                    p.setVelocity(p.getVelocity().setY(0.1));
+                                } else {
+                                    // Slowly move the player down
+                                    p.setVelocity(p.getVelocity().setY(-0.01));
+                                }
+                            }
+
+                        }
+                    }
                 }
+
             }
         }
     }

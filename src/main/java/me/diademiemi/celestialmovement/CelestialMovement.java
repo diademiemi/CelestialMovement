@@ -1,7 +1,7 @@
 package me.diademiemi.celestialmovement;
 
 import me.diademiemi.celestialmovement.command.CommandExec;
-import me.diademiemi.celestialmovement.listener.DashListener;
+import me.diademiemi.celestialmovement.listener.MovementListener;
 import me.diademiemi.celestialmovement.persistentdata.DataLoader;
 import me.diademiemi.celestialmovement.persistentdata.PlayerPreferences;
 import me.diademiemi.celestialmovement.persistentdata.PreferenceList;
@@ -43,7 +43,7 @@ public final class CelestialMovement extends JavaPlugin {
         // Register commands
         getCommand("celestial").setExecutor(new CommandExec());
 
-        pm.registerEvents(new DashListener(), this);
+        pm.registerEvents(new MovementListener(), this);
 
         // Register permissions
         pm.addPermission(new Permission("celestial.wallclimb"));

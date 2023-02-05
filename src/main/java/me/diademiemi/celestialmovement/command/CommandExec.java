@@ -123,6 +123,60 @@ public class CommandExec implements CommandExecutor {
                     p.sendMessage("Arguments: toggle/on/off, double on/off/toggle, unlimited on/off/toggle");
                 }
                 break;
+            case "wallclimb":
+                if (args.length > 1) {
+                    if (!p.hasPermission("celestial.wallclimb")) {
+                        p.sendMessage("You do not have permission to use this command");
+                        return true;
+                    }
+                    switch (args[1]) {
+                        case "toggle":
+                            preferences.setWallClimb(!preferences.getWallClimb());
+                            p.sendMessage("Wall climb enabled: " + preferences.getWallClimb());
+                            break;
+                        case "on":
+                            preferences.setWallClimb(true);
+                            p.sendMessage("Wall climb enabled: " + preferences.getWallClimb());
+                            break;
+                        case "off":
+                            preferences.setWallClimb(false);
+                            p.sendMessage("Wall climb enabled: " + preferences.getWallClimb());
+                            break;
+                        default:
+                            p.sendMessage("Invalid argument: " + args[1]);
+                            break;
+                    }
+                } else {
+                    p.sendMessage("Arguments: toggle/on/off");
+                }
+                break;
+            case "walljump":
+                if (args.length > 1) {
+                    if (!p.hasPermission("celestial.walljump")) {
+                        p.sendMessage("You do not have permission to use this command");
+                        return true;
+                    }
+                    switch (args[1]) {
+                        case "toggle":
+                            preferences.setWallJump(!preferences.getWallJump());
+                            p.sendMessage("Wall jump enabled: " + preferences.getWallJump());
+                            break;
+                        case "on":
+                            preferences.setWallJump(true);
+                            p.sendMessage("Wall jump enabled: " + preferences.getWallJump());
+                            break;
+                        case "off":
+                            preferences.setWallJump(false);
+                            p.sendMessage("Wall jump enabled: " + preferences.getWallJump());
+                            break;
+                        default:
+                            p.sendMessage("Invalid argument: " + args[1]);
+                            break;
+                    }
+                } else {
+                    p.sendMessage("Arguments: toggle/on/off");
+                }
+                break;
             default:
                 // Do stuff
                 p.sendMessage("Invalid argument");
