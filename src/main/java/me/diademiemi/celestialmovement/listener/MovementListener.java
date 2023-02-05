@@ -101,59 +101,54 @@ public class MovementListener implements Listener { // Change "BlockBreakEventLi
         // Check if player is in survival or adventure mode
         if (p.getGameMode() == GameMode.SURVIVAL || p.getGameMode() == GameMode.ADVENTURE) {
 
-            if (p.getUniqueId() != null) {
-                // Reset dash when player touches the ground
-                PlayerPreferences prefs = PreferenceList.getPlayerPreferences(p);
+            // Reset dash when player touches the ground
+            PlayerPreferences prefs = PreferenceList.getPlayerPreferences(p);
 
-                if (p.isOnGround()) {
-                    dashes.remove(p.getUniqueId());
-                    if (prefs.getDash()) {
-                        p.setAllowFlight(true);
-                    }
+            if (p.isOnGround()) {
+                dashes.remove(p.getUniqueId());
+                if (prefs.getDash()) {
+                    p.setAllowFlight(true);
                 }
-                // Reset fall damage if a player has dashed
-                if (dashes.containsKey(p.getUniqueId())) {
-                    if (dashes.get(p.getUniqueId()) > 0) {
-                        p.setFallDistance(0);
-                    }
-                }
-
-                // Check if the player is in the air
-                if (!p.isOnGround()) {
-                    // Check if player is touching a wall
-                    if (p.getLocation().add(0.5, 0, 0).getBlock().getType().isSolid() ||
-                        p.getLocation().add(-0.5, 0, 0).getBlock().getType().isSolid() ||
-                        p.getLocation().add(0, 0, 0.5).getBlock().getType().isSolid() ||
-                        p.getLocation().add(0, 0, -0.5).getBlock().getType().isSolid()) {
-
-
-                        // Check if player is sneaking
-                        if (p.isSneaking()) {
-                            if (prefs.getWallClimb()) {
-                                // Check if player is looking up
-                                if (p.getLocation().getPitch() < -20) {
-                                    // Slowly move the player up
-                                    p.setVelocity(p.getVelocity().setY(0.15));
-                                } else {
-                                    // Slowly move the player down
-                                    p.setVelocity(p.getVelocity().setY(-0.01));
-                                }
-                            }
-
-                        }
-                    }
-                }
-
             }
+            // Reset fall damage if a player has dashed
+            if (dashes.containsKey(p.getUniqueId())) {
+                if (dashes.get(p.getUniqueId()) > 0) {
+                    p.setFallDistance(0);
+                }
+            }
+
+            // Check if the player is in the air
+            if (!p.isOnGround()) {
+                // Check if player is touching a wall
+                if (p.getLocation().add(0.5, 0, 0).getBlock().getType().isSolid() ||
+                    p.getLocation().add(-0.5, 0, 0).getBlock().getType().isSolid() ||
+                    p.getLocation().add(0, 0, 0.5).getBlock().getType().isSolid() ||
+                    p.getLocation().add(0, 0, -0.5).getBlock().getType().isSolid()) {
+
+
+                    // Check if player is sneaking
+                    if (p.isSneaking()) {
+                        if (prefs.getWallClimb()) {
+                            // Check if player is looking up
+                            if (p.getLocation().getPitch() < -20) {
+                                // Slowly move the player up
+                                p.setVelocity(p.getVelocity().setY(0.15));
+                            } else {
+                                // Slowly move the player down
+                                p.setVelocity(p.getVelocity().setY(-0.01));
+                            }
+                        }
+
+                    }
+                }
+            }
+
         }
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
-        if (dashes.containsKey(p.getUniqueId())) {
-            dashes.remove(p.getUniqueId());
-        }
+        dashes.remove(e.getPlayer().getUniqueId());
     }
 
 }

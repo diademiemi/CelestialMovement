@@ -3,10 +3,8 @@ package me.diademiemi.celestialmovement.persistentdata;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class PreferenceList implements ConfigurationSerializable {
 
