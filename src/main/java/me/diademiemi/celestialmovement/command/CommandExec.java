@@ -40,6 +40,10 @@ public class CommandExec implements CommandExecutor {
         switch (args[0]) {
             case "dash":
                 if (args.length > 1) {
+                    if (!p.hasPermission("celestial.dash")) {
+                        p.sendMessage("You do not have permission to use this command");
+                        return true;
+                    }
                     switch (args[1]) {
                         case "toggle":
                             preferences.setDash(!preferences.getDash());
@@ -59,6 +63,10 @@ public class CommandExec implements CommandExecutor {
                             break;
                         case "double":
                             if (args.length > 2) {
+                                if (!p.hasPermission("celestial.dash.double")) {
+                                    p.sendMessage("You do not have permission to use this command");
+                                    return true;
+                                }
                                 switch (args[2]) {
                                     case "toggle":
                                         preferences.setDoubleDash(!preferences.getDoubleDash());
@@ -82,6 +90,10 @@ public class CommandExec implements CommandExecutor {
                             break;
                         case "unlimited":
                             if (args.length > 2) {
+                                if (!p.hasPermission("celestial.dash.unlimited")) {
+                                    p.sendMessage("You do not have permission to use this command");
+                                    return true;
+                                }
                                 switch (args[2]) {
                                     case "toggle":
                                         preferences.setUnlimitedDash(!preferences.getUnlimitedDash());
