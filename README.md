@@ -10,6 +10,7 @@ This is my entry to the [Queer Coded](https://queercoded.dev/) Spigot plugin hac
 - Midair Dash
   
 ## Usage
+Players can configure the movement to their liking with the following commands, every preference is saved per player. The default is to have everything disabled.  
 
 ### Wall Climbing
 Enable wall climbing with `/celestial wallclimb on`. Disable it with `/celestial wallclimb off`.  
@@ -23,6 +24,17 @@ Jump into a wall and press jump twice to jump off of it.
 Enable midair dash with `/celestial dash on`. Disable it with `/celestial dash off`.
 Press jump while in the air to dash. By default you can only dash once. Using `/celestial dash double on` will allow you to dash twice in a row, and `/celestial dash double off` will disable it.  
 To dash an unlimited amount of times, use `/celestial dash unlimited on`. This will also enable double dashing. To disable it, use `/celestial dash unlimited off`.  
+
+When using the dash in quick succession after leaving the ground, it'll act as a "hyperdash" in Celeste and you'll go much faster forward, at the expense of vertical momentum.  
+
+### Configuration
+Permission | Description
+--- | ---
+`celestialmovement.wallclimb` | Allows the player to enable wall climbing.
+`celestialmovement.walljump` | Allows the player to enable wall jumping.
+`celestialmovement.dash` | Allows the player to enable dashing.
+`celestialmovement.dash.double` | Allows the player to dash twice in a row.
+`celestialmovement.dash.unlimited` | Allows the player to dash an unlimited amount of times.
 
 ### Building
 1. Run `gradlew build` in the root directory of the project.
