@@ -1,10 +1,10 @@
-name: SpigotTemplate
+name: CelestialMovement
 version: '${version}'
-main: dev.queercoded.spigottemplate.SpigotTemplate
+main: me.diademiemi.celestialmovement.CelestialMovement
 api-version: 1.13
-authors: [ queercoded, diademiemi ] # Change this to your username
-description: Queer Coded template plugin, check the README!
+authors: [ diademiemi ] # Change this to your username
+description: Add movement options like Celeste into Minecraft
 commands:
-  spigottemplate:
-    description: Command for this plugin.
-    usage: /spigottemplate
+  celestial:
+    description: Turn on/off Celestial Movement
+    usage: /celestial toggle
