@@ -28,7 +28,7 @@ public class MovementListener implements Listener { // Change "BlockBreakEventLi
         // Constructor
     }
 
-    public static HashMap<UUID, Integer> dashes = new HashMap<UUID, Integer>();
+    public static HashMap<UUID, Integer> dashes = new HashMap<>();
 
     @EventHandler
     public void onPlayerToggleFlight(PlayerToggleFlightEvent e) {
@@ -133,7 +133,7 @@ public class MovementListener implements Listener { // Change "BlockBreakEventLi
                                 // Check if player is looking up
                                 if (p.getLocation().getPitch() < -20) {
                                     // Slowly move the player up
-                                    p.setVelocity(p.getVelocity().setY(0.1));
+                                    p.setVelocity(p.getVelocity().setY(0.15));
                                 } else {
                                     // Slowly move the player down
                                     p.setVelocity(p.getVelocity().setY(-0.01));
