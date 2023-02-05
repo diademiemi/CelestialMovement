@@ -1,0 +1,10 @@
+name: SpigotTemplate
+version: '${version}'
+main: dev.queercoded.spigottemplate.SpigotTemplate
+api-version: 1.13
+authors: [ queercoded, diademiemi ] # Change this to your username
+description: Queer Coded template plugin, check the README!
+commands:
+  spigottemplate:
+    description: Command for this plugin.
+    usage: /spigottemplate
